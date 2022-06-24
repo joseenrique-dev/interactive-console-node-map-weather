@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "José Enrique",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "color": "^4.2.3",
+    "inquirer": "^9.0.0"
+  }
 }
