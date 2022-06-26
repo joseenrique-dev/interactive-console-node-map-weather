@@ -1,5 +1,4 @@
 const inquirer = require('inquirer');
-const { type } = require('os');
 require('colors');
 
 const questions = [
@@ -8,16 +7,14 @@ const questions = [
         name: 'option',
         message: 'Select option',
         choices: [
-            { name: '1. Create task', value: '1' },
-            { name: '2. List task', value: '2' },
-            { name: '3. List complete task', value: '3' },
-            { name: '4. List pending task', value: '4' },
-            { name: '5. Complete task(s)', value: '5' },
-            { name: '6. Remove task', value: '6' },
-            { name: '0. Exit', value: '0' }
+            { name: `${'1.'.green} Search city`, value: 1 },
+            { name: `${'2.'.green} History`, value: 2 },
+            { name: `${'0.'.green} Exit`, value: 0 }
         ]
     }
 ]
+
+
 const inquirerMenu = async () => {
     
     console.clear();
@@ -25,7 +22,6 @@ const inquirerMenu = async () => {
     console.log('    Select option'.green);
     console.log('============================\n');
     const { option } = await inquirer.prompt(questions);
-    
     return option;
 }
 
@@ -41,12 +37,12 @@ const pause = async () => {
     await inquirer.prompt(stopQuestion);
 }
 
-const readInput = async () => {
+const readInput = async (message) => {
     const inputQuestion = [
         {
             type:'input',
             name:'desc',
-            message:'Enter task description',
+            message,
             validate: ( value ) =>{
                 if( value.length === 0 ){
                     return 'Task description is required';
@@ -66,12 +62,12 @@ const readInput = async () => {
  * @param {*} tasks 
  * @returns 
  */
-const taskListRemove = async ( tasks = [] ) => {
-    const choices = tasks.map( (task, index) => {
+const listPlaces = async ( places = [] ) => {
+    const choices = places.map( (place, index) => {
         const idx = `${index+ 1}. `.green;
         return {
-            value: task.id,
-            name: `${idx} ${task.description}`
+            value: place.id,
+            name: `${idx} ${place.name}`
         }
     });
     choices.unshift({
@@ -82,7 +78,7 @@ const taskListRemove = async ( tasks = [] ) => {
         {
             type: 'list',
             name: 'id',
-            message: 'Select task to remove',
+            message: 'Select place:',
             choices: choices
         }
     ]
@@ -133,7 +129,7 @@ module.exports = {
     inquirerMenu,
     pause,
     readInput,
-    taskListRemove,
+    listPlaces,
     confirm,
     showCheckList
 }
