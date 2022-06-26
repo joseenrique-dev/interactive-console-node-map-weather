@@ -2,6 +2,8 @@ const axios = require('axios');
 
 class Searches {
     history = ['ex 1', 'ex 2', 'ex 3'];
+    lat = '';
+    lng = '';
 
     constructor(){
         //TODO: Read db if exist.
@@ -14,6 +16,7 @@ class Searches {
                     'language': 'en'
                 };
     }
+
     async cities(place = ''){
         try {
             const axiosInstance = axios.create({
@@ -34,13 +37,30 @@ class Searches {
         }
     }
 
+    get paramWeatherApi(){
+        return {
+            'lat': this.lat,
+            'lon': this.lng,
+            appid: process.env.OPEN_WEATHER_KEY,
+            units: 'metric'
+        }
+    }
+    
     async weatherByPlace(lat, lng){
         try {
+            this.lat = lat;
+            this.lng = lng;
+            const axiosInstance = axios.create({
+                baseURL:`https://api.openweathermap.org/data/2.5/weather`,
+                params: this.paramWeatherApi
+                });
+            const response = await axiosInstance.get();
+            const {main,weather} = response.data;
             return{
-                temp: '20',
-                min: '10',
-                max: '30',
-                desc: 'Cloudy'
+                temp: main.temp,
+                min: main.temp_min,
+                max: main.temp_max,
+                desc: weather[0].description
             }
         } catch (error) {
             console.error(error);
