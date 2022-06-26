@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index"
   },
   "keywords": [],
   "author": "José Enrique",
   "license": "ISC",
   "dependencies": {
-    "color": "^4.2.3",
-    "inquirer": "^9.0.0"
+    "axios": "^0.27.2",
+    "colors": "^1.4.0",
+    "dotenv": "^16.0.1",
+    "inquirer": "^8.2.4"
   }
 }
