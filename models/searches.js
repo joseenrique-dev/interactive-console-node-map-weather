@@ -1,9 +1,11 @@
 const axios = require('axios');
+const fs = require('fs');
 
 class Searches {
     history = ['ex 1', 'ex 2', 'ex 3'];
     lat = '';
     lng = '';
+    dbPath = './db/database.json';
 
     constructor(){
         //TODO: Read db if exist.
@@ -65,6 +67,21 @@ class Searches {
         } catch (error) {
             console.error(error);
         }
+    }
+
+    saveHistory ( place = ''){
+        console.log(`Saving ${place}`); 
+        if(this.history.includes(place.toLocaleLowerCase())) return;
+        this.history.unshift(place);
+        this.saveBD();
+        console.log(this.history);
+    }
+
+    saveBD(){
+        const payload  = {
+            history: this.history
+        }
+        fs.writeFileSync(this.dbPath, JSON.stringify(payload)); 
     }
 }
 
