@@ -9,6 +9,7 @@ class Searches {
 
     constructor(){
         //TODO: Read db if exist.
+        this.readDB()
     }
 
     get mapBoxParams() {
@@ -82,6 +83,16 @@ class Searches {
             history: this.history
         }
         fs.writeFileSync(this.dbPath, JSON.stringify(payload)); 
+    }
+
+    readDB(){
+        const dataFromDB= fs.readFileSync(this.dbPath, 'utf8');
+        const dataParse = JSON.parse(dataFromDB);
+        return dataParse
+    }
+
+    capitalize(str){
+        return str.charAt(0).toUpperCase() + str.slice(1);
     }
 }
 
