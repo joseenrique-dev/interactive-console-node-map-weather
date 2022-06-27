@@ -16,26 +16,31 @@ const main = async () => {
                 //Search places
                 const places = await searches.cities(place);
                 const placeId = await listPlaces(places);
+                if(placeId === '0') continue;
+                //Save DB
+                searches.saveHistory(place);
                 console.log(`Selected place: ${placeId}`);
                 //Select place
                 const selectedPlace= places.find(place => place.id === placeId);
                 const { lat, lng, name } = selectedPlace;
                 //Weather
                 const weather = await searches.weatherByPlace(lat, lng);
-                console.log(`Weather in ${name}: ${weather.desc}`);
                 //Show results
                 console.log('City information\n'.green);
                 console.log(`City: ${name}`);
                 console.log('Lat:', lat);
                 console.log('Lng:', lng);
-                console.log('Temperature:');
-                console.log('Minimum:');
-                console.log('Maximum:');
+                console.log(`Temperature: ${(Math.round(weather.temp * 100)/100).toFixed(2)} °C`);
+                console.log(`Minimum: ${(Math.round(weather.min * 100)/100).toFixed(2)} °C`);
+                console.log(`Maximum: ${(Math.round(weather.max * 100)/100).toFixed(2)} °C`);
                 console.log(`How is the weather?: The weather is ${weather.desc}.`);
 
                 break;
             case 2:
-                console.log('Option #2');
+                const { history } = searches.readDB();
+                history.forEach(place => {
+                    console.log(` - ${searches.capitalize(place)}`.bgBlack);
+                });
                 break;
             default:
                 break;
